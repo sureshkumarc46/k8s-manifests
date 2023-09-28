@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ev-vehicle-be-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nds-server
+  template:
+    metadata:
+      labels:
+        app: nds-server
+    spec:
+      containers:
+        - name: nds-server
+          image: 296710535627.dkr.ecr.ap-south-1.amazonaws.com/ev-vehicle-be-repo:dev
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: logs-volume
+              mountPath: /logs
+          envFrom:
+            - configMapRef:
+                name: evserver-config
+      volumes:
+        - name: logs-volume
+          emptyDir: {}
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ev-vehicle-be-service
+spec:
+  selector:
+    app: nds-server
+  ports:
+    - protocol: TCP
+      port: 9090
+      targetPort: 8080
+  type: NodePort

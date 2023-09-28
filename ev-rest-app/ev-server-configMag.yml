@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: evserver-config
+data:
+  AWS_PROFILE: ev-user-mgmt
+  DDL_AUTO: 'update'
+  GITHUB_TOKEN: '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'
+  GITHUB_USERNAME: 'guruprasadn7'
+  GOOGLE_OAUTH2_CLIENT_ID: '54947800811-9op619s69vgv78n31kqn6dgpdpn5n38i.apps.googleusercontent.com'
+  GOOGLE_OAUTH2_CLIENT_SECRET: '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'
+  GOOGLE_OAUTH2_REDIRECT_URI: 'http://localhost:3000/oauth2/redirect'
+  JWT_ISSUER: 'nds'
+  JWT_SECRET: 'd997ebbb-ca49-4a3b-944d-936fced41052'
+  MAIL_PASSWORD: 'jksjzjvyipghoflk'
+  MAIL_USER: 'guruprasad@nichesolv.com'
+  POSTGRES_DB: 'evahana'
+  POSTGRES_HOST_URI: '10.0.2.229:5432'
+  INSTANCE_TYPE: 'dev'
+  POSTGRES_USER: 'esarathi'
+  POSTGRES_PASSWORD: 'nd$M0t0r'
+  APPLICATION_BASE_URL: 'https://evahanam.dev.nichesolv.com/user-mgmt'
+  IMAGE_UPLOAD_AWS_ACCESS_KEY: 'AKIAUKFKTPHF3S3OW2BX'
+  IMAGE_UPLOAD_AWS_SECRET_KEY: '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'
+  IMAGE_BUCKET: 'com.nichesolv.dev1.profile.image'

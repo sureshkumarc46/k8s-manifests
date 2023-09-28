@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-mgmt-deployment
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: evserver
+  template:
+    metadata:
+      labels:
+        app: evserver
+    spec:
+      containers:
+        - name: evserver
+          image: 296710535627.dkr.ecr.ap-south-1.amazonaws.com/ev-user-be-repo:latest  
+          ports:
+            - containerPort: 9090
+          volumeMounts:
+            - name: aws-credentials
+              mountPath: /root/.aws/credentials
+          envFrom:
+            - configMapRef:
+                name: evserver-config
+      volumes:
+        - name: aws-credentials
+          hostPath:
+            path: /root/.aws/credentials
+      imagePullSecrets:
+        - name: regcred 
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-mgmt-service
+spec:
+  selector:
+    app: evserver
+  ports:
+    - protocol: TCP
+      port: 9090
+      targetPort: 9090
+  type: NodePort 

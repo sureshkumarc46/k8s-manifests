@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: timescale/timescaledb-ha:pg14
+          ports:
+            - containerPort: 5432
+          resources:
+            requests:
+              memory: "1Gi"
+          volumeMounts:
+            - name: efs-volume
+              mountPath: /home/postgres/pgdata
+          env:
+            - name: POSTGRES_USER
+              value: evahanaRoot
+            - name: POSTGRES_PASSWORD
+              value: eV@H@N@Pw3
+            - name: POSTGRES_DB
+              value: evahana
+            - name: POSTGRES_WORK_MEM
+              value: 16MB
+            - name: POSTGRES_MAINT_WORK_MEM
+              value: 128MB
+            - name: POSTGRES_MAX_CONNECTIONS
+              value: "100"
+            - name: POSTGRES_SHARED_BUFFERS
+              value: 512MB
+      volumes:
+        - name: efs-volume
+          persistentVolumeClaim:
+            claimName: efs-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+spec:
+  selector:
+    app: postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+  type: ClusterIP
